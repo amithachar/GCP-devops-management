@@ -34,13 +34,13 @@ gcloud iam service-accounts add-iam-policy-binding "YOUR_SA_EMAIL" \
 ```
 
 ### Summary of Values for GitLab
-### Once these commands finish, use these values in your .gitlab-ci.yml or GitLab CI/CD Variables:
+ Once these commands finish, use these values in your .gitlab-ci.yml or GitLab CI/CD Variables:
 
-### Workload Identity Provider: projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/netflix-app-pool/providers/gitlab-provider
+ Workload Identity Provider: projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/netflix-app-pool/providers/gitlab-provider
 
-### Service Account: YOUR_SA_EMAIL
+ Service Account: YOUR_SA_EMAIL
 
-### Would you like me to generate the full gcloud command for the IAM binding if you give me your Project Number and Service Account email?
+ Would you like me to generate the full gcloud command for the IAM binding if you give me your Project Number and Service Account email?
 
 # 1. How to find an existing Service Account
 ### Run this command on your VM to list all available service accounts in your current project:
@@ -80,7 +80,7 @@ gcloud iam service-accounts add-iam-policy-binding "netflix-deployer@PROJECT_ID.
 ```
 
 
-### To finish the integration, you need to add two specific variables in GitLab. These allow your pipeline to find the OIDC "bridge" you just built on GCP.
+# To finish the integration, you need to add two specific variables in GitLab. These allow your pipeline to find the OIDC "bridge" you just built on GCP.
 
 ### Go to your GitLab Project > Settings > CI/CD > Variables and add the following:
 
