@@ -3,7 +3,7 @@
 ############################
 provider "google" {
   project = "durable-catbird-450018-j4"
-  region  = "asia-south1"
+  region  = "asia-south1-a"
 }
 
 ############################
@@ -21,7 +21,7 @@ resource "google_compute_subnetwork" "privategpt_subnet" {
   count         = 1
   name          = "privategpt-subnet-${count.index}"
   ip_cidr_range = cidrsubnet("10.0.0.0/16", 8, count.index)
-  region        = "asia-south1"
+  region        = "asia-south1-a"
   network       = google_compute_network.privategpt_vpc.id
 }
 
@@ -56,7 +56,7 @@ resource "google_compute_firewall" "allow_ssh" {
 ############################
 resource "google_container_cluster" "privategpt" {
   name     = "privategpt-cluster"
-  location = "asia-south1"
+  location = "asia-south1-a"
 
   deletion_protection = false
 
@@ -75,7 +75,7 @@ resource "google_container_cluster" "privategpt" {
 resource "google_container_node_pool" "privategpt_nodes" {
   name       = "privategpt-node-pool"
   cluster    = google_container_cluster.privategpt.name
-  location   = "asia-south1"
+  location   = "asia-south1-a"
 
   node_count = 1
 
