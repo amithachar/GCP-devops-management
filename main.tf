@@ -60,8 +60,7 @@ resource "google_container_cluster" "privategpt" {
 
   deletion_protection = false
 
-  network    = google_compute_network.privategpt_vpc.name
-  subnetwork = google_compute_subnetwork.privategpt_subnet[0].name
+  networking_mode = "VPC_NATIVE"
 
   remove_default_node_pool = true
   initial_node_count       = 1
