@@ -52,20 +52,6 @@ resource "google_compute_firewall" "allow_ssh" {
 }
 
 ############################
-# Service Account (IAM Role Equivalent)
-############################
-resource "google_service_account" "gke_service_account" {
-  account_id   = "gke-service-account"
-  display_name = "GKE Service Account"
-}
-
-resource "google_project_iam_member" "gke_node_permissions" {
-  project = "durable-catbird-450018-j4"
-  role   = "roles/container.nodeServiceAccount"
-  member = "serviceAccount:${google_service_account.gke_service_account.email}"
-}
-
-############################
 # GKE Cluster
 ############################
 resource "google_container_cluster" "privategpt" {
@@ -89,17 +75,18 @@ resource "google_container_node_pool" "privategpt_nodes" {
   cluster    = google_container_cluster.privategpt.name
   location   = "us-central1"
 
-  node_count = 3
+  node_count = 2
 
   autoscaling {
-    min_node_count = 3
-    max_node_count = 50
+    min_node_count = 1
+    max_node_count = 3
   }
 
   node_config {
-    machine_type = "e2-standard-2"
+    machine_type = "e2-micro"
+    disk_size_gb = 10
 
-    service_account = google_service_account.gke_service_account.email
+    service_account = terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
