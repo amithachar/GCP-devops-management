@@ -3,7 +3,7 @@
 ############################
 provider "google" {
   project = "durable-catbird-450018-j4"
-  region  = "asia-south1-a"
+  region  = "asia-south1"   # ✅ FIXED (region, not zone)
 }
 
 ############################
@@ -15,20 +15,19 @@ resource "google_compute_network" "privategpt_vpc" {
 }
 
 ############################
-# Subnets (2 subnets)
+# Subnet
 ############################
 resource "google_compute_subnetwork" "privategpt_subnet" {
-  count         = 1
-  name          = "privategpt-subnet-${count.index}"
-  ip_cidr_range = cidrsubnet("10.0.0.0/16", 8, count.index)
+  name          = "privategpt-subnet"
+  ip_cidr_range = "10.0.0.0/24"
   region        = "asia-south1"
   network       = google_compute_network.privategpt_vpc.id
 }
 
 ############################
-# Firewall Rules (instead of Security Groups)
+# Firewall Rules
 ############################
-resource "google_compute_firewall" "allow_all_internal" {
+resource "google_compute_firewall" "allow_internal" {
   name    = "allow-internal"
   network = google_compute_network.privategpt_vpc.name
 
@@ -52,41 +51,13 @@ resource "google_compute_firewall" "allow_ssh" {
 }
 
 ############################
-# GKE Cluster
+# GKE Autopilot Cluster (FINAL FIX)
 ############################
 resource "google_container_cluster" "privategpt" {
-  name     = "privategpt-cluster"
-  location = "asia-south1-a"
+  name             = "privategpt-cluster"
+  location         = "asia-south1"   # ✅ regional (Autopilot requirement)
+
+  enable_autopilot = true            # 🔥 KEY FIX
 
   deletion_protection = false
-
-  networking_mode = "VPC_NATIVE"
-
-  remove_default_node_pool = true
-  initial_node_count       = 1
-
-  ip_allocation_policy {}
-}
-
-############################
-# Node Pool (Equivalent to Node Group)
-############################
-resource "google_container_node_pool" "privategpt_nodes" {
-  name     = "privategpt-node-pool"
-  cluster  = google_container_cluster.privategpt.name
-  location = "asia-south1-a"
-
-  node_count = 1
-
-  node_config {
-    machine_type = "e2-micro"      
-    disk_size_gb = 10              
-    disk_type    = "pd-standard"  
-
-    service_account = "terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com"
-
-    oauth_scopes = [
-      "https://www.googleapis.com/auth/cloud-platform"
-    ]
-  }
 }
