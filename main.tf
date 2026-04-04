@@ -86,7 +86,7 @@ resource "google_container_node_pool" "privategpt_nodes" {
     machine_type = "e2-micro"
     disk_size_gb = 10
 
-    service_account = terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com
+   service_account = "terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
