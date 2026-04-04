@@ -22,7 +22,7 @@ resource "google_compute_subnetwork" "privategpt_subnet" {
   name          = "privategpt-subnet-${count.index}"
   ip_cidr_range = cidrsubnet("10.0.0.0/16", 8, count.index)
   region        = "us-central1"
-  network       = google_compute_network.itprivategpt_vpc.id
+  network       = google_compute_network.privategpt_vpc.id
 }
 
 ############################
@@ -60,6 +60,7 @@ resource "google_service_account" "gke_service_account" {
 }
 
 resource "google_project_iam_member" "gke_node_permissions" {
+  project = "durable-catbird-450018-j4"
   role   = "roles/container.nodeServiceAccount"
   member = "serviceAccount:${google_service_account.gke_service_account.email}"
 }
