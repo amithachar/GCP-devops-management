@@ -50,6 +50,18 @@ resource "google_compute_firewall" "allow_ssh" {
 
   source_ranges = ["0.0.0.0/0"]
 }
+############################
+# Service Account (IAM Role Equivalent)
+############################
+resource "google_service_account" "gke_service_account" {
+  account_id   = "gke-service-account"
+  display_name = "GKE Service Account"
+}
+
+resource "google_project_iam_member" "gke_node_permissions" {
+  role   = "roles/container.nodeServiceAccount"
+  member = "serviceAccount:${google_service_account.gke_service_account.email}"
+}
 
 ############################
 # GKE Cluster
