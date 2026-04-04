@@ -81,12 +81,13 @@ resource "google_container_node_pool" "privategpt_nodes" {
 
   autoscaling {
     min_node_count = 1
-    max_node_count = 2
+    max_node_count = 1
   }
 
   node_config {
     machine_type = "e2-micro"
     disk_size_gb = 10
+    disk_type    = "pd-standard"
 
    service_account = "terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com"
 
