@@ -20,7 +20,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                        git url: 'https://github.com/amithachar/GCP-devops-management.git', branch: 'iac'
+                        git url: 'https://github.com/amithachar/GCP-devops-management.git', branch: 'iac-code'
                 }
             }
         }
