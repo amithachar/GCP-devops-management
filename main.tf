@@ -21,7 +21,7 @@ resource "google_compute_subnetwork" "privategpt_subnet" {
   count         = 1
   name          = "privategpt-subnet-${count.index}"
   ip_cidr_range = cidrsubnet("10.0.0.0/16", 8, count.index)
-  region        = "asia-south1-a"
+  region        = "asia-south1"
   network       = google_compute_network.privategpt_vpc.id
 }
 
