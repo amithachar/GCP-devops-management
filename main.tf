@@ -75,11 +75,11 @@ resource "google_container_node_pool" "privategpt_nodes" {
   cluster    = google_container_cluster.privategpt.name
   location   = "us-central1"
 
-  node_count = 2
+  node_count = 1
 
   autoscaling {
     min_node_count = 1
-    max_node_count = 3
+    max_node_count = 2
   }
 
   node_config {
