@@ -73,21 +73,29 @@ resource "google_container_cluster" "privategpt" {
 # Node Pool (Equivalent to Node Group)
 ############################
 resource "google_container_node_pool" "privategpt_nodes" {
-  name     = "privategpt-node-pool"
-  cluster  = google_container_cluster.privategpt.name
-  location = "asia-south1-a"
+  name       = "privategpt-node-pool"
+  cluster    = google_container_cluster.privategpt.name
+  location   = "asia-south1-a"
 
   node_count = 1
 
-  node_config {
-    machine_type = "e2-micro"      # ✅ safest
-    disk_size_gb = 10              # ✅ very small
-    disk_type    = "pd-standard"   # ✅ not SSD
+  autoscaling {
+    min_node_count = 1
+    max_node_count = 1
+  }
 
-    service_account = "terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com"
+  node_config {
+    machine_type = "e2-micro"
+    disk_size_gb = 10
+    disk_type    = "pd-standard"
+
+   service_account = "terraform-sa@durable-catbird-450018-j4.iam.gserviceaccount.com"
 
     oauth_scopes = [
       "https://www.googleapis.com/auth/cloud-platform"
     ]
+
+    tags = ["gke-node"]
   }
 }
+
