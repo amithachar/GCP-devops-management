@@ -3,7 +3,7 @@
 ############################
 provider "google" {
   project = "durable-catbird-450018-j4"
-  region  = "africa-south1"
+  region  = "africa-south1-a"
 }
 
 ############################
@@ -58,7 +58,7 @@ resource "google_compute_firewall" "allow_ssh" {
 
 resource "google_container_cluster" "privategpt" {
   name     = "privategpt-cluster"
-  location = "africa-south1"
+  location = "africa-south1-a"
 
   deletion_protection = false
 
@@ -77,7 +77,7 @@ resource "google_container_cluster" "privategpt" {
 resource "google_container_node_pool" "privategpt_nodes" {
   name     = "privategpt-node-pool"
   cluster  = google_container_cluster.privategpt.name
-  location = "africa-south1"
+  location = "africa-south1-a"
 
   node_count = 1
 
